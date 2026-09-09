@@ -32,7 +32,7 @@ MAT_STYLE = {
     "SS316": {"iocl": "SS316", "ongc": "STAINLESS STEEL 316", "hpcl": "SS-316", "bpcl": "SS316"},
     "SS304": {"iocl": "SS304", "ongc": "STAINLESS STEEL 304", "hpcl": "SS-304", "bpcl": "SS304"},
     "CS": {"iocl": "CS", "ongc": "CARBON STEEL", "hpcl": "CS", "bpcl": "CS"},
-    "GRAPHITE": {"iocl": "GR", "ongc": "GRAPHITE", "hpcl": "Graphite", "bpcl": "GRAPHITE"},
+    "GRAPHITE": {"iocl": "GRPH", "ongc": "GRAPHITE", "hpcl": "Graphite", "bpcl": "GRAPHITE"},
 }
 
 VALVE_WORDS = {
