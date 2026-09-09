@@ -1,0 +1,19 @@
+[theme]
+primaryColor = "#1F4E79"
+backgroundColor = "#FAFAFA"
+secondaryBackgroundColor = "#EAEEF2"
+textColor = "#1A1A1A"
+font = "sans serif"
+
+[client]
+toolbarMode = "minimal"
+
+[server]
+# sentence-transformers pulls in `transformers`, whose model zoo has ~100+
+# submodules that optionally import torchvision (not installed -- we never
+# use vision models, only SentenceTransformer for text). Streamlit's file
+# watcher walks every imported module's __path__ to know what to watch,
+# which triggers all of those as ModuleNotFoundErrors -- caught internally
+# and harmless, but very slow and alarming-looking in the terminal on the
+# first script run. Disabling the watcher avoids that scan entirely.
+fileWatcherType = "none"

@@ -22,6 +22,8 @@ def load_from_chroma() -> pd.DataFrame:
             "cpse": metadata.get("cpse"),
             "raw_description": metadata.get("raw_description"),
             "normalized_description": metadata.get("normalized_description"),
+            "quantity": metadata.get("quantity"),
+            "unit_price": metadata.get("unit_price"),
             "embedding": np.asarray(embedding),
         })
     return pd.DataFrame(rows)

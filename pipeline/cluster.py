@@ -166,7 +166,8 @@ def assign_master_codes(df: pd.DataFrame) -> pd.DataFrame:
     Expects df to have material_id, cpse, raw_description,
     normalized_description, and embedding (one vector per row) columns.
     embedding is not required to be pre-normalized -- confidence is computed
-    from unit-normalized copies internally.
+    from unit-normalized copies internally. quantity/unit_price are carried
+    through to the output when present in the input, but are not required.
     """
     df = df.copy()
     df["category"] = df["normalized_description"].apply(get_category)
@@ -220,10 +221,14 @@ def assign_master_codes(df: pd.DataFrame) -> pd.DataFrame:
 
     df["needs_review"] = df["confidence"] < NEEDS_REVIEW_THRESHOLD
 
-    return df[[
+    output_cols = [
         "material_id", "cpse", "raw_description", "normalized_description",
         "category", "cluster_id", "master_material_code", "confidence", "needs_review",
-    ]]
+    ]
+    # quantity/unit_price are optional -- older Chroma collections built
+    # before pricing was tracked won't have them, so don't require them.
+    output_cols += [c for c in ("quantity", "unit_price") if c in df.columns]
+    return df[output_cols]
 
 
 def save_to_db(df: pd.DataFrame) -> None:
