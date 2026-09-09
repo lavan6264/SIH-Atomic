@@ -66,8 +66,12 @@ def build_vector_store(df: pd.DataFrame):
     Expects df to have cpse, material_id, raw_description, and
     normalized_description columns. material_id must be globally unique
     across all 4 CPSEs (it is, by construction: "<CPSE>-00001" etc.) since
-    it is used as the Chroma document id. Uses upsert so re-running this
-    on the same data is idempotent. Returns the collection.
+    it is used as the Chroma document id. quantity/unit_price are carried
+    through as metadata when present, so downstream clustering can surface
+    a price comparison per Master Material Code -- they're optional since
+    Chroma collections built before pricing was tracked won't have them.
+    Uses upsert so re-running this on the same data is idempotent. Returns
+    the collection.
     """
     collection = get_collection()
 
@@ -76,6 +80,13 @@ def build_vector_store(df: pd.DataFrame):
 
     ids = df["material_id"].astype(str).tolist()
     metadatas = df[["cpse", "material_id", "raw_description", "normalized_description"]].astype(str).to_dict("records")
+
+    if "quantity" in df.columns:
+        for meta, qty in zip(metadatas, df["quantity"].fillna(0).astype(int)):
+            meta["quantity"] = int(qty)
+    if "unit_price" in df.columns:
+        for meta, price in zip(metadatas, df["unit_price"].fillna(0.0).astype(float)):
+            meta["unit_price"] = float(price)
 
     collection.upsert(
         ids=ids,
