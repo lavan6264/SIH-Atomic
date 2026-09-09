@@ -43,7 +43,7 @@ _GLUED_PATTERNS = (
     (re.compile(r"\b(SS|CS)(\d{3})\b"), r"\1 \2"),
     (re.compile(r"\bCL(\d+)\b"), r"CL \1"),
     (re.compile(r"\bGR([0-9]+(?:\.[0-9]+)?|B[0-9]+M?)\b"), r"GR \1"),
-    (re.compile(r"\b(\d+)(M3H)\b"), r"\1 \2"),
+    (re.compile(r"\b(\d+)(M3/?HR|M3H)\b"), r"\1 \2"),
 )
 
 # Number + unit standardization: "3IN", "3 IN", "3-IN" (hyphen already
