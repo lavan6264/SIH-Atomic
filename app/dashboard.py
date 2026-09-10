@@ -166,9 +166,15 @@ def render_dashboard():
         .sort_values(["needs_review_any", "n_items"], ascending=[False, False])
     )
 
+    n_clusters = len(cluster_summary)
+    if n_clusters == 0:
+        st.info("No clusters match the current filters.")
+        return
+
+    min_cards = min(5, n_clusters)
     max_cards = st.number_input(
-        "Max cluster cards to show", min_value=5, max_value=len(cluster_summary) or 5,
-        value=min(20, len(cluster_summary) or 5), step=5,
+        "Max cluster cards to show", min_value=min_cards, max_value=n_clusters,
+        value=min(20, n_clusters), step=5,
     )
 
     for mmc in cluster_summary.index[:max_cards]:
